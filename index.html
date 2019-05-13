@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="style.css">
+    <title>Budget App</title>
+</head>
+<body>
+    <!-- logo and the total budget area -->
+    <header>
+        <h1>budget app</h1>
+        <span>Budget for <span id="month">jan</span></span>
+        <h1 id="budget"><strong>$1200</strong></h1>
+    </header>
+
+    <!-- the detail entering section -->
+    <section class="input">
+        <select name="+/-" id="type">
+            <option value="inc">Income</option>
+            <option value="exp">Expense</option>
+        </select>
+        <input type="text" placeholder="details of transaction" id="detail">
+        <input type="number" min="1" id="value" placeholder="value of transaction">
+        <button id="submit">add</button>
+    </section>
+
+    <!-- entered income/expensse list segment -->
+    <main>
+        <div class="income">
+            <ul class="inc">
+                
+            </ul>
+        </div>
+        <div class="expense">
+            <ul class="exp">
+
+            </ul>
+        </div>
+    </main>
+
+
+    <script src="app.js"></script>
+</body>
+</html>
