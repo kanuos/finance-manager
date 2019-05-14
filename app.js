@@ -6,12 +6,12 @@ class EventHandlers{
         this.add= document.getElementById('submit');
     }
 
-    eventListeners=()=>{
+    eventListeners=(ui,db)=>{
         this.add.addEventListener('click',()=>{
-            // console.log(`the type of transaction : ${this.type.value}
-            //     the detail of transaction : ${this.detail.value}
-            //     the value of transaction : ${this.value.value}`);
             
+            db.setTransaction(this.type.value,this.detail.value,this.value.value);
+                         
+            ui.displayData(this.type.value,this.detail.value,this.value.value);
         });
     }
 }
@@ -25,15 +25,27 @@ class DataBase{
         this.exp = [];
         this.inc= [];
     }
-
-    getTransaction=()=>{
-
+    
+    setTransaction=(type,detail,value)=>{
+        console.log('Inside the Database class getTransaction method');
+        this[type].push({
+            detail,
+            value
+        });
     }
 }
 
 
 class UIPainter{
+    
+    displayData=(type,detail,value)=>{
 
+        const li=document.createElement('li');
+        li.innerHTML = `<strong>${detail}&nbsp;&nbsp;&nbsp;${value}<strong>`;
+
+        document.querySelector(`.${type}`).insertAdjacentElement('beforeend',li);
+
+    }
 }
 
 
@@ -45,11 +57,11 @@ class Controller{
     }
 
 init=()=>{
-    this.event.eventListeners();
+    this.event.eventListeners(this.ui,this.db);
 }
 
 }
 
 
 const Obj= new Controller();
-Obj.eventListeners();
+Obj.init();
