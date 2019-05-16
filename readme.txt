@@ -1,32 +1,24 @@
 progress report
 
 
-JS
---------------------------------
-14-may-2019 
-
-app boiler plate working
-
-app input fetches data to db and displays the same to the UI.
-
-
-CSS
---------------------------------
-
-
-html
------------------------------------------
-
-
-*****************************************************************************
+****************************************************************************
 
 pending
 
 JS
 -----------------
+edit clause
+delete item clause
+
 calculate budget
-eventdelegation for remove and edit
 local storage
+generate report by month
+
+
+
+html
+-------------------
+update inc and exp li structure. easy for navigation...
 
 CSS
 -----------------
