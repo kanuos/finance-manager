@@ -49,15 +49,15 @@ class EventHandlers{
 
 
 class DataBase{
-    constructor(){
+    constructor(id,exp,inc){
         this.ui= new UIPainter();
         this.incomeUL=document.querySelector('.inc');
         this.expenseUL= document.querySelector('.exp');
         this.totalExp=0;
         this.totalInc=0;
-        this.exp = [];
-        this.inc= [];
-        this.id=0;
+        this.exp = exp;
+        this.inc= inc;
+        this.id=id;
         this.currentMonth;
     }
     
@@ -150,21 +150,6 @@ class DataBase{
 
         localStorage.setItem('budget',JSON.stringify(obj));
     }
-
-    // getLocalStorageDB=()=>{
-    //     const ls = localStorage.getItem('budget');
-    //     // if it doenst then create
-    //     if(ls===undefined){
-    //         localStorage.setItem('budget',JSON.stringify({
-    //             budget:0,
-    //             percentage:0,
-    //             exp:[],
-    //             inc:[]
-    //         }));
-    //     }
-    //     JSON.parse(ls)
-        
-    // }
 }
 
 
@@ -196,7 +181,7 @@ class UIPainter{
 
 class Controller{
     constructor(){
-        this.db= new DataBase();
+        this.db;
         this.event= new EventHandlers();
     }
 
@@ -204,8 +189,28 @@ init=()=>{
     this.event.eventListeners(this.db);
 }
 
+loadDB=()=>{
+    
+    const ls = localStorage.getItem('budget');
+    // if it doenst exist ->  create
+    if(ls===undefined){
+        localStorage.setItem('budget',JSON.stringify({
+            id:0,
+            exp:[],
+            inc:[]
+        }));
+    }
+    const {id,exp,inc}=JSON.parse(ls);
+    this.db= new DataBase(id,exp,inc);
+    this.db.getBudget();
+    this.db.show();
+    
+
+}
 }
 
 
 const Obj= new Controller();
 Obj.init();
+
+document.addEventListener('DOMContentLoaded',Obj.loadDB);
