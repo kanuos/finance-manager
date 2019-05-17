@@ -8,8 +8,6 @@ pending
 JS
 -----------------
 
-
-local storage
 generate report by month
 
 
