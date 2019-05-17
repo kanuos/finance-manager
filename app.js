@@ -8,63 +8,57 @@ class EventHandlers{
         this.expenseUL= document.querySelector('.exp');
     }
 
-    eventListeners=(ui,db)=>{
+    eventListeners=(db)=>{
         // when the add button is clicked
         this.add.addEventListener('click',()=>{
             
-            const id = db.setTransaction(this.type.value,this.detail.value,this.value.value);
-                         
-            ui.displayData(this.type.value,this.detail.value,this.value.value,id);
-
+        db.setTransaction(this.type.value,this.detail.value,this.value.value);
             
         this.clearFields();
 
         });
 
-        // when the list elements are clicked
-        // this.incomeUL=document.querySelector('.inc');
-        // this.expenseUL= document.querySelector('.exp');
+        this.incomeUL.addEventListener('click',e=>{
+            this.eventDelegation(e.target,db,"inc")});
 
-        this.incomeUL.addEventListener('click',(e)=>{
-            console.log('Inside the Income UL',e.target);
-            this.eventDelegation(e,db)});
-        this.expenseUL.addEventListener('click',e=>{
-            console.log('inside the expense UL',e.target);   
-            this.eventDelegation(e,db)});
+        this.expenseUL.addEventListener('click',e=>{   
+            this.eventDelegation(e.target,db,"exp")});
     }
+
+
     clearFields=()=>{
         this.detail.value='';
         this.value.value='';
     }
 
-    eventDelegation=(e,db)=>{
+    eventDelegation=(e,db,type)=>{
         
-        if(e.target.innerText==='delete'){
-            console.log(' Inside the delegation emthod');
-            console.log(e.target.getAttribute('data-id'));
-            db.show();
+        const selectedId= e.getAttribute('data-id');
+
+        if(e.innerText==='delete'){
+            db.deleteItem(selectedId,type);
         }
-        else{
+        else {
+            const editValues=db.editItem(selectedId,type,e);
 
-            // edit clause 
-            const test=e.target.previousElementSibling.previousElementSibling;
-            console.log(test);
-            this.detail.value=test.children[0];
-            this.value.value=test.children[1];
-
+            this.detail.value= editValues.text;
+            this.value.value= editValues.number;
         }
     }
 }
 
 
 class DataBase{
-    // global data
     constructor(){
-        // this.totalExp=0;
-        // this.totalInc=0;
+        this.ui= new UIPainter();
+        this.incomeUL=document.querySelector('.inc');
+        this.expenseUL= document.querySelector('.exp');
+        this.totalExp=0;
+        this.totalInc=0;
         this.exp = [];
         this.inc= [];
         this.id=0;
+        this.currentMonth;
     }
     
     setTransaction=(type,detail,value)=>{
@@ -84,25 +78,93 @@ class DataBase{
             case 10: month='nov';break; 
             case 11: month='dec';break; 
         }
-                
+        this.currentMonth=month;
         this[type].push({
             id: ++this.id,
             detail,
             value,
             month
         });
+        this.show();
+        this.getBudget();
+    }
 
-        return this.id;
+    deleteItem=(id,type)=>{
+        
+        this[type]=this[type].filter((el) => el.id!=id);
+      
+        this.show();  
+        this.getBudget();
+    }
+
+    editItem=(id,type,e)=>{
+
+        const editOnListItem=e.previousElementSibling.previousElementSibling;
+      
+        this.deleteItem(id,type);
+        
+        return {
+            text: editOnListItem.children[0].innerText,
+            number: parseInt(editOnListItem.children[1].innerText)
+        }
+        
     }
 
     show=()=>{
-        console.log('Expense');
-        this.exp.forEach(e=> console.log(e));
-        console.log('income');
-        this.inc.forEach(e=> console.log(e));
+        this.incomeUL.innerHTML='';
+        this.expenseUL.innerHTML='';
+
+      
+        this.exp.forEach(e=> {
+            this.ui.displayData("exp", e.detail, e.value, e.id);
+        });
+
+        this.inc.forEach(e=> {
+            this.ui.displayData("inc", e.detail, e.value, e.id);
+        });
     }
 
-    // deleteTransaction=()
+    getBudget=()=>{
+        this.totalExp= this.exp.reduce((total,current) => total + parseInt(current.value),0);
+        this.totalInc= this.inc.reduce((total,current) => total + parseInt(current.value),0);
+        const budgetNow=this.totalInc -  this.totalExp;
+        let budgetPercentage;
+        try{
+            budgetPercentage = (budgetNow/this.totalInc *100).toFixed(2) ;
+        }
+        catch(err){
+            budgetPercentage=0;
+        }
+        this.ui.displayBudget(budgetNow,this.currentMonth,budgetPercentage) ;
+
+        this.setlocalStorageDB(budgetNow,budgetPercentage);
+    }
+
+    setlocalStorageDB=(budget,percentage)=>{
+        const obj = {
+            budget,
+            percentage,
+            exp:this.exp,
+            inc: this.inc
+        };
+
+        localStorage.setItem('budget',JSON.stringify(obj));
+    }
+
+    // getLocalStorageDB=()=>{
+    //     const ls = localStorage.getItem('budget');
+    //     // if it doenst then create
+    //     if(ls===undefined){
+    //         localStorage.setItem('budget',JSON.stringify({
+    //             budget:0,
+    //             percentage:0,
+    //             exp:[],
+    //             inc:[]
+    //         }));
+    //     }
+    //     JSON.parse(ls)
+        
+    // }
 }
 
 
@@ -115,10 +177,19 @@ class UIPainter{
                             <div class="text">${detail}&nbsp;</div>
                             <div class="value">&nbsp;${value}</div>
                         </strong>
-                            <button data-id=${id}>delete</button><button>edit</button>`;
+                            <button data-id=${id}>delete</button><button data-id=${id}>edit</button>`;
 
         document.querySelector(`.${type}`).insertAdjacentElement('beforeend',li);
 
+    }
+
+    displayBudget=(budgetAmount,currentMonth,percent) =>{
+        const budget= document.getElementById('budget');
+        const month= document.getElementById('month');
+        const percentage= document.getElementById('percentage');
+        budget.innerText=budgetAmount;
+        month.innerText=currentMonth;
+        percentage.innerText=`${percent}%`;
     }
 }
 
@@ -127,11 +198,10 @@ class Controller{
     constructor(){
         this.db= new DataBase();
         this.event= new EventHandlers();
-        this.ui= new UIPainter();
     }
 
 init=()=>{
-    this.event.eventListeners(this.ui,this.db);
+    this.event.eventListeners(this.db);
 }
 
 }
