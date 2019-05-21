@@ -8,13 +8,22 @@
     <title>Budget App</title>
 </head>
 <body>
-    <!-- logo and the total budget area -->
+    <!-- logo and the month area -->
     <header>
-        <h1>budget app</h1>
-        <span>Budget for <strong id="month"></strong></span>
-        <h1 id="budget"></h1>
-        <span id="percentage"></span>
+        <div class="container">
+            <h1>budget app</h1>
+            <div class="month">
+                <span>Budget for the month of <strong id="month"></strong></span>
+                <span><a href="#" title="generate montly budget report">report</a> </span>
+            </div>
+        </div>
     </header>
+    
+    <!-- total budget and percentage area -->
+    <div class="budget-banner">
+        <h1>Current Budget : <span id="budget"></span></h1>
+        <h3>Percentage : <span id="percentage"></span></h3>
+    </div>
 
     <!-- the detail entering section -->
     <section class="input">
