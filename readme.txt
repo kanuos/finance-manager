@@ -7,12 +7,11 @@ pending
 
 JS
 -----------------
-
+delete edit button styling 
 generate report by month
 
 
 
 CSS
 -----------------
-full styling
-skeleton (may be)
+list styling delete edit icon

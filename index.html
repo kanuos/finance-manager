@@ -4,27 +4,34 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
     <link rel="stylesheet" href="style.css">
     <title>Budget App</title>
 </head>
 <body>
     <!-- logo and the month area -->
+    <span id="report"><a href="#" title="generate montly budget report">Report</a> </span>
     <header>
         <div class="container">
-            <h1>budget app</h1>
-            <div class="month">
-                <span>Budget for the month of <strong id="month"></strong></span>
-                <span><a href="#" title="generate montly budget report">report</a> </span>
+            <span>Budget for the month of <strong id="month"></strong></span>
+            
+            <div class="budget-banner">
+                <h1><span id="budget"></span></h1>
+                <h3 class="banner banner--inc">
+                    <span class="banner-text">Income : </span>
+                    <span id="totalIncome"></span>
+                </h3>
+                <h3 class="banner banner--exp">
+                    <span class="banner-text">Expense : </span>
+                    <span class="banner-wrapper">
+                        <span id="totalExpense"></span>
+                        <span id="percentage"></span>
+                    </span>
+                </h3>
             </div>
         </div>
     </header>
     
-    <!-- total budget and percentage area -->
-    <div class="budget-banner">
-        <h1>Current Budget : <span id="budget"></span></h1>
-        <h3>Percentage : <span id="percentage"></span></h3>
-    </div>
-
     <!-- the detail entering section -->
     <section class="input">
         <select name="+/-" id="type">
@@ -33,7 +40,7 @@
         </select>
         <input type="text" placeholder="details of transaction" id="detail">
         <input type="number" min="1" id="value" placeholder="value of transaction">
-        <button id="submit">add</button>
+        <a href="" id="submit" class="button"><i class="far fa-check-circle"></i></a>
     </section>
 
     <!-- entered income/expensse list segment -->

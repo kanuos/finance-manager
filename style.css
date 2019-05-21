@@ -1,105 +1,184 @@
-@import url('https://fonts.googleapis.com/css?family=Indie+Flower');
+@import url('https://fonts.googleapis.com/css?family=Kodchasan:300,400&display=swap');
 
 :root{
-    --text :  #333;
+    --text :  #111;
+    --grey : #f7f7f7;
+    --grey-dark: #c5c5c5;
+    --edit : #0a350a;
+    --income : #28b9b5;
+    --expense : #ff5049;
+    --expense-light : #ff736d;
 }
 *{
     margin: 0;
     padding: 0;
-    text-decoration: none;
     box-sizing: border-box;
 }
 
 html{
     /* font-size: 62.5%; */
-    font-family: 'Indie Flower', cursive;
+    font-family: 'Kodchasan', cursive;
 }
 body{
     display: grid;
-    grid-template-columns: .25fr .5fr 3fr .5fr .25fr;
-    grid-template-rows: 20vh 10vh 1fr auto  minmax(55vh,auto);
+    grid-template-rows: 35vh 2fr minmax(50vh,auto);
+    background: var(--grey);
+    position: relative;
+}
+#report, #report a{
+    position: absolute;
+    right: 1rem;
+    top: 1rem;
+    text-decoration: none;
+    color: var(--expense-light);
 }
 
 header{
-    grid-row: 1/3;
-    grid-column: 1/6;
-    background: linear-gradient(rgba(250,250,250,.25),rgba(255,255,255,.25)),url(image/hero.jpg);
+    grid-row: 1/2;
+    background: linear-gradient(rgba(0,0,0,.5),rgba(0,0,0,.55)),url(image/hero.jpg);
     background-size: cover;
     background-position: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     text-align: center;
+}
+header .container{
+    color: var(--grey);
+    display: flex;
+    flex-direction: column;
+    font-size: 1.1rem;
+}
+
+#month{
+    text-transform: capitalize;
+    text-shadow: 1px 1px var(--income), 2px 2px var(--expense);
+    font-size: 1.5rem;
+}
+.budget-banenr{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.banner{
+    text-align: center;
+    width: 15rem;
+    margin: 0 auto;
+    text-align: left;
+    margin-top: .5rem;
+    padding: .25rem 1.25rem;
+    display: flex;
+    justify-content: space-between;
+    font-weight: 300;
+    border-radius: .2rem;
+}
+
+.banner-text{
+    color: var(--text);
+    font-size: 1.1rem;
+}
+
+.banner--inc{
+    background-color: var(--income);
+}
+.banner--exp{
+    padding-right: .5rem;
+    background-color: var(--expense);
+}
+
+.banner-wrapper{
+    height: 100%;
+    display: flex;
+    align-items: center;
+}
+#totalExpense, #totalIncome {
+    color: var(--grey);
+    font-size: 1.1rem;
+}
+
+#percentage{
+    padding: .2rem .3rem;
+    height: 50%;
+    background: var(--expense-light);
+    font-size: .6rem;
+    margin-left: .5rem;
+}
+/* ************************************input section starts here ****************************** */
+.input{
+    grid-row: 2/3;
+    height: 100%;
+    width: 50%;
+    margin: 0 auto;
+    background: var(--grey);
+    padding: 1rem;
     display: flex;
     justify-content: center;
     align-items: center;
 }
-header .container{
-    width: 90%;
-    text-transform: capitalize;
-    display: flex;
-    flex-direction: column;
-    color:var(--text);
-}
 
-header h1{
-    margin: -2rem 0 2rem 0;
-    font-size: 3rem;
-    color: var(--text);
-    text-shadow: 2px 2px yellow, 4px 4px orange;
+input, select{
+    border: 1px solid var(--grey-dark);
+    border-radius: .2rem;
+    height: 100%;
+    padding: .5rem;
+    margin-right: 1rem;
 }
-.month{
-    display: flex;
-    width: 100%;
-    justify-content: space-between;
-    align-items: center;
-    font-size: 1.2rem;
-}
-#month{
-    font-size: 1.5rem;
-}
-
-header a{
-    background: var(--text);
-    color: #eee;
-    padding: .15rem 1rem;
-    border-radius: 5rem;
+input::placeholder{
+    font: inherit;
     text-transform: capitalize;
 }
 
-/* *************************************************Budget Banner section****************************** */
-
-.budget-banner{
-    grid-row: 3/4;
-    grid-column: 1/6;
-    background: #eee;
-    display: flex;
-    padding: 1rem;
-    justify-content: space-around;
-    align-items: center;
+input:focus,
+select:focus{
+    border: 1px solid var(--expense-light);
+    outline: none;
 }
-.budget-banner h1{
-    flex-basis: 65%;
+input[type="number"]{
+    flex-basis: 2%;
+    max-width: 10rem;
+    flex-grow: 0;
+}
+input[type="text"]{
     flex-grow: 1;
-    font-size: 1.5rem;;
 }
-#budget{
-    font-size: 3rem;
-    color: var(--text);
+input[type="number"]::-webkit-inner-spin-button{
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+}
+.button{
+    font: inherit;
+    text-transform: uppercase;
+    font-size: 1.5rem;
+    background: transparent;
+    color: var(--expense);
+    font-weight: 300;
 }
 
-.budget-banner h3{
-    font-size: 1.2rem;
-}
-.input{
-    grid-row: 4/5;
-    grid-column: 1/6;
-    display: flex;
-}
-
+/* *****************List of inc/exp*************** */
 main{
-    grid-row: 5/-1;
-    grid-column: 1/6;
-    background: orange;
+    grid: 3;
+    height: 100%;
     display: flex;
-    justify-content: space-between;
+    justify-content: space-around;
     align-items: flex-start;
-    padding: 1rem;
+}
+
+.inc-text{
+    color: var(--income);
+}
+
+.exp-text{
+    color: var(--expense);
+}
+
+.button-edit{
+    color: var(--edit);
+    font-size: 1rem;
+}
+.button-exp{
+    color: var(--expense);
+    font-size: 1rem;
 }
