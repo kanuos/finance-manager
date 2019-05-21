@@ -58,10 +58,11 @@ class DataBase{
         this.exp = [];
         this.inc= [];
         this.id=0;
-        this.currentMonth;
+        this.currentMonth=this.getCurrentMonth();
+        this.budgetPercentage=0;
     }
-    
-    setTransaction=(type,detail,value)=>{
+
+    getCurrentMonth=()=>{
         const date= new Date().getMonth();
         let month;
         switch(date){
@@ -78,12 +79,16 @@ class DataBase{
             case 10: month='nov';break; 
             case 11: month='dec';break; 
         }
-        this.currentMonth=month;
+        return month;
+    }
+    
+    setTransaction=(type,detail,value)=>{
+       
         this[type].push({
             id: ++this.id,
             detail,
             value,
-            month
+            month:this.currentMonth
         });
         this.show();
         this.getBudget();
@@ -127,23 +132,27 @@ class DataBase{
     getBudget=()=>{
         this.totalExp= this.exp.reduce((total,current) => total + parseInt(current.value),0);
         this.totalInc= this.inc.reduce((total,current) => total + parseInt(current.value),0);
-        const budgetNow=this.totalInc -  this.totalExp;
-        let budgetPercentage;
-        try{
-            budgetPercentage = (budgetNow/this.totalInc *100).toFixed(2) ;
-        }
-        catch(err){
-            budgetPercentage=0;
-        }
-        this.ui.displayBudget(budgetNow,this.currentMonth,budgetPercentage) ;
+        const budgetNow=parseInt(this.totalInc -  this.totalExp);
 
-        this.setlocalStorageDB(budgetNow,budgetPercentage);
+        if(this.totalInc==0){
+            this.budgetPercentage= 0;
+        }
+        else{
+            this.budgetPercentage = parseFloat((budgetNow/this.totalInc *100).toFixed(2)) ;
+        }
+        console.log(`inside the getBudget method. value of this.budgetPercentage= ${this.budgetPercentage}`);
+        
+        
+        this.ui.displayBudget(budgetNow,this.currentMonth,this.budgetPercentage) ;
+
+        this.setlocalStorageDB(budgetNow,this.budgetPercentage);
     }
 
     setlocalStorageDB=(budget,percentage)=>{
         const obj = {
             budget,
             percentage,
+            id:this.id,
             exp:this.exp,
             inc: this.inc
         };
