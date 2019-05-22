@@ -4,7 +4,7 @@
     --text :  #111;
     --grey : #f7f7f7;
     --grey-dark: #c5c5c5;
-    --edit : #0a350a;
+    --edit : #187e18;
     --income : #28b9b5;
     --expense : #ff5049;
     --expense-light : #ff736d;
@@ -109,13 +109,15 @@ header .container{
 .input{
     grid-row: 2/3;
     height: 100%;
-    width: 50%;
+    width: 80%;
+    max-width: 900px;
     margin: 0 auto;
     background: var(--grey);
     padding: 1rem;
     display: flex;
     justify-content: center;
     align-items: center;
+    border-bottom: 1px solid var(--grey-dark);
 }
 
 input, select{
@@ -136,8 +138,7 @@ select:focus{
     outline: none;
 }
 input[type="number"]{
-    flex-basis: 2%;
-    max-width: 10rem;
+    max-width: 9rem;
     flex-grow: 0;
 }
 input[type="text"]{
@@ -157,28 +158,106 @@ input[type="number"]::-webkit-inner-spin-button{
     font-weight: 300;
 }
 
+@media (max-width:540px){
+    .input{
+        width: 60%;
+        margin: 0 auto;
+    }
+    input,select{
+        margin-right: .5rem;
+    }
+}
+
+
+
+
+
 /* *****************List of inc/exp*************** */
 main{
     grid: 3;
     height: 100%;
-    display: flex;
-    justify-content: space-around;
-    align-items: flex-start;
+    width: 80%;
+    max-width: 950px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    padding-top: 3rem;
+    grid-column-gap: 4rem;
 }
 
-.inc-text{
+@media (max-width:682px){
+    main{
+        width: 100%;
+    }
+
+    .value-exp,.value-inc{
+        padding-left: 1.25rem;
+    }
+    html{
+        font-size: 12px;
+    }
+}
+
+
+.value-inc{
+    padding-left: 2rem;
     color: var(--income);
 }
 
-.exp-text{
+.value-exp{
+    padding-left: 2rem;
     color: var(--expense);
 }
 
 .button-edit{
+    cursor: pointer;
     color: var(--edit);
-    font-size: 1rem;
+    font-size: .8rem;
+    text-decoration: none;
+    text-transform: capitalize;
+    padding: 0 .5rem;
+    transition: all .25s linear;
 }
-.button-exp{
+.button-del{
+    cursor: pointer;
+    color: var(--expense-light);
+    font-size: .8rem;
+    text-transform: capitalize;
+    text-decoration: none;
+    transition: all .25s linear;
+}
+.button-del:hover{
     color: var(--expense);
-    font-size: 1rem;
+    transform: skewX(-10deg);
+}
+.button-edit:hover{
+    color: var(--income);
+    transform: skewX(-10deg);
+}
+
+.list-item{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: .25rem 1.25rem;
+    border-bottom: .5px solid var(--grey-dark);
+}
+
+.list-text{
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-right: 1rem;
+}
+
+.inc, .exp{
+    min-height: 20vh;
+}
+.inc{
+    grid-column: 1/2;
+}
+
+.exp{
+    grid-column: 2/-1;
 }

@@ -12,7 +12,13 @@ class EventHandlers{
         // when the add button is clicked
         this.add.addEventListener('click',()=>{
             
-        db.setTransaction(this.type.value,this.detail.value,this.value.value);
+            if(this.value.value>0 && this.detail.value.length>0){
+
+                db.setTransaction(this.type.value,this.detail.value,this.value.value);
+            }
+            else{
+                this.inputErrorMessage();
+            }
             
         this.clearFields();
 
@@ -44,6 +50,10 @@ class EventHandlers{
             this.detail.value= editValues.text;
             this.value.value= editValues.number;
         }
+    }
+
+    inputErrorMessage=()=>{
+        alert("Enter valid input");
     }
 }
 
@@ -138,12 +148,16 @@ class DataBase{
             this.budgetPercentage= 0;
         }
         else{
+            if(budgetNow===this.totalInc){
+                this.budgetPercentage=0;
+            }
+            else
             this.budgetPercentage = parseFloat((budgetNow/this.totalInc *100).toFixed(2)) ;
         }
         console.log(`inside the getBudget method. value of this.budgetPercentage= ${this.budgetPercentage}`);
         
         
-        this.ui.displayBudget(budgetNow,this.currentMonth,this.budgetPercentage) ;
+        this.ui.displayBudget(budgetNow,this.currentMonth,this.budgetPercentage,this.totalExp,this.totalInc) ;
 
         this.setlocalStorageDB(budgetNow,this.budgetPercentage);
     }
@@ -167,23 +181,28 @@ class UIPainter{
     displayData=(type,detail,value,id)=>{
 
         const li=document.createElement('li');
-        li.innerHTML = `<strong>
-                            <div class="text">${detail}&nbsp;</div>
-                            <div class="value">&nbsp;${value}</div>
+        li.classList.add('list-item');
+        li.innerHTML = `<strong class="list-text">
+                            <div class="text">${detail} </div>
+                            <div class="value-${type}">${value}</div>
                         </strong>
-                            <button data-id=${id}>delete</button><button data-id=${id}>edit</button>`;
+                            <a class="button-del" data-id=${id}>delete</a><a class="button-edit" data-id=${id}>edit</a>`;
 
         document.querySelector(`.${type}`).insertAdjacentElement('beforeend',li);
 
     }
 
-    displayBudget=(budgetAmount,currentMonth,percent) =>{
+    displayBudget=(budgetAmount,currentMonth,percent,totalExpense,totalIncome) =>{
         const budget= document.getElementById('budget');
         const month= document.getElementById('month');
         const percentage= document.getElementById('percentage');
+        const income = document.getElementById('totalIncome');
+        const expense= document.getElementById('totalExpense');
         budget.innerText=budgetAmount;
         month.innerText=currentMonth;
         percentage.innerText=`${percent}%`;
+        expense.innerHTML=totalExpense;
+        income.innerHTML= totalIncome;
     }
 }
 

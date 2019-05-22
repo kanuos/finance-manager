@@ -25,7 +25,7 @@
                     <span class="banner-text">Expense : </span>
                     <span class="banner-wrapper">
                         <span id="totalExpense"></span>
-                        <span id="percentage"></span>
+                        <span id="percentage" title="percentage of total budget"></span>
                     </span>
                 </h3>
             </div>
@@ -38,8 +38,8 @@
             <option value="inc">Income</option>
             <option value="exp">Expense</option>
         </select>
-        <input type="text" placeholder="details of transaction" id="detail">
-        <input type="number" min="1" id="value" placeholder="value of transaction">
+        <input type="text" placeholder="details of transaction" id="detail" required>
+        <input type="number" min="1" id="value" placeholder="value of transaction" required>
         <a href="" id="submit" class="button"><i class="far fa-check-circle"></i></a>
     </section>
 
